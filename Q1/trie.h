@@ -3,13 +3,15 @@
 #include <stdbool.h>
 #include <pthread.h>
 
+#define ALP_SIZE 26
+
 typedef struct node { 
     int value;
     bool is_end;
     #ifndef _NO_HOH_LOCK_TRIE
     pthread_mutex_t node_lock;
     #endif
-    struct node* children[26];   // Array mapping character to the next node
+    struct node* children[ALP_SIZE];   // Array mapping character to the next node
 } _trie_node_t;
 
 typedef _trie_node_t* trie_node_t;
@@ -34,6 +36,9 @@ typedef _trie_t* trie_t;
         `make s_lock` 
         `make rw_lock`
 */
+
+// Added: function to return a new node
+trie_node_t new_node();
 
 // init_trie() should initialize and return an empty trie
 trie_t init_trie(void); 
