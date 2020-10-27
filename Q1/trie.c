@@ -13,7 +13,7 @@ trie_node_t new_node(){
     printf("new_node() called.\n");
     _trie_node_t* a = (_trie_node_t*)malloc(sizeof(_trie_node_t));
     a->is_end = false;
-    a->value = 0; // $
+    a->value = -1; // $
     for(int i = 0; i<ALP_SIZE; i++){
         a->children[i] = NULL;
     }
@@ -28,14 +28,13 @@ trie_t init_trie(void){
 }
 
 void insert(trie_t trie, char* key, int value){
-    printf("insert called.\n");
+    printf("insert() called.\n");
     // Write your code here
     trie_node_t x = trie->head;
     int key_length = strlen(key);
 
     for(int i = 0; i<key_length; i++){
         int index = key[i] - 'a';    
-        trie_node_t a = x->children[index];
         
         if(x->children[index] == NULL){
             x->children[index] = new_node();
@@ -43,13 +42,33 @@ void insert(trie_t trie, char* key, int value){
         x = x->children[index];
     }
 
+    x->is_end = true;
     x->value = value;
 }
 
 int find(trie_t trie, char* key, int* val_ptr){
+    printf("find() called.\n");
     // Write your code here
     int key_length = strlen(key);
-    return -1;
+    trie_node_t x = trie->head;
+    
+    for(int i = 0; i<key_length; i++){
+        int index = key[i] - 'a';
+
+
+        if(x->children[index]!=NULL){
+            x = x->children[index];
+        } else {
+            return -1;
+        }
+    }
+
+    if(x->is_end){ 
+        x->value = *val_ptr;
+        return 0;
+    } else {
+        return -1;
+    }
 } 
 
 void delete_kv(trie_t trie, char* key){

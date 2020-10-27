@@ -37,10 +37,15 @@ typedef _trie_t* trie_t;
         `make rw_lock`
 */
 
-// Added: function to return a new node
+/*
+    Added: function to return a new node
+
+*/
 trie_node_t new_node();
 
-// init_trie() should initialize and return an empty trie
+/*
+    init_trie() should initialize and return an empty trie
+*/
 trie_t init_trie(void); 
 
 /* 

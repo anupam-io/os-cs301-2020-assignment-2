@@ -16,13 +16,21 @@ void show_node(trie_node_t x){
 
 int main(int argc, char* argv[]){
     trie_t my_trie = init_trie();
-    char* my_key = "india";
-    insert(my_trie, my_key, 10);
+
+    insert(my_trie, "india", 10);
+    insert(my_trie, "cat", 10);
+    insert(my_trie, "brain", 10);
+    insert(my_trie, "whole", 10);
 
 
-    show_node(my_trie->head);
+    int abcd = 0;
+    int* waste = &abcd;
+    printf("%d", find(my_trie, "ind", waste));
 
 
+    
+
+    // show_node(my_trie->head);
     printf("\n");
     return 0;
 }
