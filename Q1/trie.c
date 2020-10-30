@@ -71,8 +71,68 @@ int find(trie_t trie, char* key, int* val_ptr){
     }
 } 
 
+// Two options here:
+// Either make this function or
+// add another var in the node
+int is_empty(trie_node_t t){
+    if(!t){
+        return 1;
+    }
+    
+    for(int i = 0; i<ALP_SIZE; i++){
+        if(t->children[i]){
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+int _rec_delete(trie_node_t t, char* key, int curr_depth){
+    // returning 1 means: have deleted this node
+    // returning 0 means: not deleted hence, 
+    // other nodes also won't get deleted as well
+    if(!t){
+        return 0;
+    }
+
+    if(curr_depth == strlen(key)){
+        if(t->is_end){
+            t->is_end = false;
+            free(t);
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    
+    if(t->children[key[curr_depth] - 'a']){
+        int res = _rec_delete(t->children[key[curr_depth] - 'a'], key, curr_depth+1);
+        if(res == 0){
+            return 0;
+        } else {
+            t->children[key[curr_depth] - 'a'] = NULL;
+            if(is_empty(t)){
+                free(t);
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    } else {
+        return 0;
+    }
+
+    printf("Error occured in _rec_delete() !!! \n");
+    exit(0);
+    return 100;
+}
+
 void delete_kv(trie_t trie, char* key){
     // Write your code here
+    if(trie->head == NULL) return;
+    _rec_delete(trie->head, key, 0);
+
 }
 
 char** keys_with_prefix(trie_t trie, char* prefix){

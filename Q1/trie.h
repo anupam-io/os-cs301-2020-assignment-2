@@ -60,6 +60,20 @@ void insert(trie_t trie, char* key, int value);
 */
 int find(trie_t trie, char* key, int* val_ptr); 
 
+
+/*
+    checks whether the current node 
+    has any descendants or not
+*/
+int is_empty(trie_node_t);
+
+
+/*
+    recursively function to delete the nodes.
+*/
+int _rec_delete(trie_node_t t, char* key, int curr_depth);
+
+
 /*
     delete_kv(trie_t trie, char* key) deletes the key and its value from the trie if it is present.
 */
