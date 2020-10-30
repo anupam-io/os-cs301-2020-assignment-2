@@ -62,14 +62,14 @@ int find(trie_t trie, char* key, int* val_ptr);
 
 
 /*
-    checks whether the current node 
+    Added: checks whether the current node 
     has any descendants or not
 */
 int is_empty(trie_node_t);
 
 
 /*
-    recursively function to delete the nodes.
+    Added: recursively function to delete the nodes.
 */
 int _rec_delete(trie_node_t t, char* key, int curr_depth);
 
@@ -85,6 +85,11 @@ void delete_kv(trie_t trie, char* key);
     If no key matches the prefix, the array will just have a single NULL.
 */
 char** keys_with_prefix(trie_t trie, char* prefix);
+
+/*
+    Added: recursively delete the trie
+*/
+void _rec_delete_node(trie_node_t t);
 
 /*
     delete_trie(trie_t trie) clears the entire trie from memory. 

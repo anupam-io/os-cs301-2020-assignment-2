@@ -100,6 +100,7 @@ int _rec_delete(trie_node_t t, char* key, int curr_depth){
         if(t->is_end){
             t->is_end = false;
             free(t);
+            t = NULL;
             return 1;
         } else {
             return 0;
@@ -114,6 +115,7 @@ int _rec_delete(trie_node_t t, char* key, int curr_depth){
             t->children[key[curr_depth] - 'a'] = NULL;
             if(is_empty(t)){
                 free(t);
+                t = NULL;
                 return 1;
             } else {
                 return 0;
@@ -142,6 +144,27 @@ char** keys_with_prefix(trie_t trie, char* prefix){
     return list;
 }
 
+void _rec_delete_node(trie_node_t t){
+    if(!t){
+        return;
+    }
+
+    if(t->is_end){
+        free(t);
+        t = NULL;
+        return;
+    } 
+
+    for(int i = 0; i<ALP_SIZE; i++){
+        if(t->children[i]){
+            _rec_delete_node(t->children[i]);
+        }
+    }
+}
+
 void delete_trie(trie_t trie){
     // Write your code here
+    _rec_delete_node(trie->head);
+    free(trie);
+    trie = NULL;
 }
