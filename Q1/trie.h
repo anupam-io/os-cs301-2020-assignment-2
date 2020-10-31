@@ -37,22 +37,26 @@ typedef _trie_t* trie_t;
         `make rw_lock`
 */
 
+
 /*
     Added: function to return a new node
 
 */
 trie_node_t new_node();
 
+
 /*
     init_trie() should initialize and return an empty trie
 */
 trie_t init_trie(void); 
+
 
 /* 
     insert(trie_t trie, char* key, int value) should put the given value in the trie t.
     Overwrite the value if the key already exists.
 */
 void insert(trie_t trie, char* key, int value); 
+
 
 /* 
     find(trie_t trie, char* key, void **save_ptr) should return -1 if the key is not found. 
@@ -80,16 +84,25 @@ int _rec_delete(trie_node_t t, char* key, int curr_depth);
 void delete_kv(trie_t trie, char* key);
 
 /*
+    Added: Recursive function for autocomplete,
+    adds suggestions into list
+*/
+void _rec_auto_comp(trie_node_t root, char* curr_prefix, int curr_depth, char** list, int *total_words);
+
+
+/*
     keys_with_prefix(trie_t trie, char* prefix) should return an array of strings with the given prefix (in sorted order).
     Last element of the array should be NULL
     If no key matches the prefix, the array will just have a single NULL.
 */
 char** keys_with_prefix(trie_t trie, char* prefix);
 
+
 /*
     Added: recursively delete the trie
 */
 void _rec_delete_node(trie_node_t t);
+
 
 /*
     delete_trie(trie_t trie) clears the entire trie from memory. 
