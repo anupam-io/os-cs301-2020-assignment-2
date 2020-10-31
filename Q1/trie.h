@@ -35,6 +35,8 @@ typedef _trie_t* trie_t;
         `make single_threaded`
         `make s_lock` 
         `make rw_lock`
+
+    make test_trie_single_threaded && make single_threaded
 */
 
 
@@ -59,7 +61,7 @@ void insert(trie_t trie, char* key, int value);
 
 
 /* 
-    find(trie_t trie, char* key, void **save_ptr) should return -1 if the key is not found. 
+    find(trie_t trie, char* key, int *val_ptr) should return -1 if the key is not found. 
     Otherwise, return 0 and put the value in the variable pointed to by save_ptr.
 */
 int find(trie_t trie, char* key, int* val_ptr); 
@@ -99,7 +101,7 @@ char** keys_with_prefix(trie_t trie, char* prefix);
 
 
 /*
-    Added: recursively delete the trie
+    Added: recursively delete all the nodes of trie
 */
 void _rec_delete_node(trie_node_t t);
 

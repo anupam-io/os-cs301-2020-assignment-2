@@ -10,10 +10,10 @@
 
 
 trie_node_t new_node(){
-    printf("new_node() called.\n");
+    // printf("new_node() called.\n");
     _trie_node_t* a = (_trie_node_t*)malloc(sizeof(_trie_node_t));
     a->is_end = false;
-    a->value = -1; // $
+    a->value = 0;
     for(int i = 0; i<ALP_SIZE; i++){
         a->children[i] = NULL;
     }
@@ -21,25 +21,22 @@ trie_node_t new_node(){
 }
 
 trie_t init_trie(void){
-    // Write zyour code here
+    // Write your code here
     trie_t a = (trie_t)malloc(sizeof(_trie_t));
-    a->head = new_node(0);
+    a->head = new_node();
     return a;
 }
 
 void insert(trie_t trie, char* key, int value){
-    printf("insert() called.\n");
+    // printf("insert() called.\n");
     // Write your code here
     trie_node_t x = trie->head;
-    int key_length = strlen(key);
 
-    for(int i = 0; i<key_length; i++){
-        int index = key[i] - 'a';    
-        
-        if(x->children[index] == NULL){
-            x->children[index] = new_node();
+    for(int i = 0; i<strlen(key); i++){
+        if(x->children[key[i] - 'a'] == NULL){
+            x->children[key[i] - 'a'] = new_node();
         }
-        x = x->children[index];
+        x = x->children[key[i] - 'a'];
     }
 
     x->is_end = true;
@@ -47,7 +44,7 @@ void insert(trie_t trie, char* key, int value){
 }
 
 int find(trie_t trie, char* key, int* val_ptr){
-    printf("find() called.\n");
+    // printf("find() called.\n");
     // Write your code here
     int key_length = strlen(key);
     trie_node_t x = trie->head;
@@ -64,7 +61,7 @@ int find(trie_t trie, char* key, int* val_ptr){
     }
 
     if(x->is_end){ 
-        x->value = *val_ptr;
+        *val_ptr = x->value;
         return 0;
     } else {
         return -1;
@@ -75,10 +72,6 @@ int find(trie_t trie, char* key, int* val_ptr){
 // Either make this function or
 // add another var in the node
 int is_empty(trie_node_t t){
-    if(!t){
-        return 1;
-    }
-    
     for(int i = 0; i<ALP_SIZE; i++){
         if(t->children[i]){
             return 0;
@@ -89,6 +82,7 @@ int is_empty(trie_node_t t){
 }
 
 int _rec_delete(trie_node_t t, char* key, int curr_depth){
+    // printf("_rec_delete() called, curr_depth: %d\n", curr_depth);
     // returning 1 means: have deleted this node
     // returning 0 means: not deleted hence, 
     // other nodes also won't get deleted as well
@@ -99,9 +93,18 @@ int _rec_delete(trie_node_t t, char* key, int curr_depth){
     if(curr_depth == strlen(key)){
         if(t->is_end){
             t->is_end = false;
-            free(t);
-            t = NULL;
-            return 1;
+            t->value = 0;
+
+
+            if(is_empty(t)){
+                free(t);
+                t = NULL;
+            // printf("Last call at depth: %d\n", curr_depth);
+
+                return 1;
+            } else {
+                return 0;
+            }
         } else {
             return 0;
         }
@@ -109,38 +112,37 @@ int _rec_delete(trie_node_t t, char* key, int curr_depth){
     
     if(t->children[key[curr_depth] - 'a']){
         int res = _rec_delete(t->children[key[curr_depth] - 'a'], key, curr_depth+1);
+
         if(res == 0){
+            // printf("Call @ depth: %d direct returning\n", curr_depth);
             return 0;
         } else {
             t->children[key[curr_depth] - 'a'] = NULL;
+
             if(is_empty(t)){
                 free(t);
                 t = NULL;
+            // printf("Call @ depth: %d NODE DELETED.\n", curr_depth);
 
                 return 1;
             } else {
+            // printf("Call @ depth: %d returning without deleting as node has other children.\n ", curr_depth);
                 return 0;
             }
         }
-    } else {
-        return 0;
     }
-
-    printf("Error occured in _rec_delete() !!! \n");
-    exit(0);
-    return 100;
+    
+    return 0;
 }
 
 void delete_kv(trie_t trie, char* key){
-    // Write your code here
-    if(trie->head == NULL) return;
+    // printf("delete_kv() called.\n");
     _rec_delete(trie->head, key, 0);
-
 }
 
 void _rec_auto_comp(trie_node_t root, char* curr_prefix, int curr_depth, char** list, int *total_words) 
 { 
-    printf("_rec_auto_comp() called at %d.\n", curr_depth);
+    // printf("_rec_auto_comp() called at %d.\n", curr_depth);
     // found a string in Trie with the given prefix 
     if (root->is_end) 
     { 
@@ -179,7 +181,7 @@ void _rec_auto_comp(trie_node_t root, char* curr_prefix, int curr_depth, char** 
 char** keys_with_prefix(trie_t trie, char* prefix){
     const int MAX_LENGTH = 1000;
  
-    printf("keys_with_prefix() called for prefix: %s\n", prefix);
+    // printf("keys_with_prefix() called for prefix: %s\n", prefix);
     char** list = calloc(MAX_LENGTH, sizeof(char*)); 
     int total_words = 0;
     list[0] = NULL;
@@ -204,7 +206,7 @@ char** keys_with_prefix(trie_t trie, char* prefix){
     _rec_auto_comp(t, _prefix, strlen(_prefix), list, &total_words);
     // hope the above function works correctly
 
-    printf("returning list from keys_with_prefix(),\ntotal words returning: %d\n", total_words);
+    // printf("returning list from keys_with_prefix(),\ntotal words returning: %d\n", total_words);
     return list;
 }
 
