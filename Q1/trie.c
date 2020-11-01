@@ -119,7 +119,7 @@ int _rec_delete(trie_node_t t, char* key, int curr_depth){
         } else {
             t->children[key[curr_depth] - 'a'] = NULL;
 
-            if(is_empty(t)){
+            if(!t->is_end && is_empty(t)){
                 free(t);
                 t = NULL;
             // printf("Call @ depth: %d NODE DELETED.\n", curr_depth);
@@ -148,7 +148,7 @@ void _rec_auto_comp(trie_node_t root, char* curr_prefix, int curr_depth, char** 
     { 
         // insert currPrefix into the list
         *total_words = (*total_words)+1;
-        list[*total_words - 1] = (char*)malloc(strlen(curr_prefix)*sizeof(curr_prefix[0]));
+        list[*total_words - 1] = (char*)malloc((strlen(curr_prefix)+1)*sizeof(curr_prefix[0]));
         strcpy(list[*total_words-1], curr_prefix);
 
         list[*total_words] = NULL;
