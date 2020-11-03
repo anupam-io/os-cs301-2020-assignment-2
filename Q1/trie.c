@@ -4,9 +4,6 @@
 #include <pthread.h>
 #include "trie.h"
 
-
-// trie_t
-// trie_t_node
 #define lock pthread_mutex_lock
 #define unlock pthread_mutex_unlock
 
@@ -58,7 +55,7 @@ void insert(trie_t trie, char* key, int value){
 
 int find(trie_t trie, char* key, int* val_ptr){
     // printf("find() called.\n");
-    
+
     trie_node_t x = trie->head;
     lock(&x->node_lock);
 
@@ -214,7 +211,8 @@ char** keys_with_prefix(trie_t trie, char* prefix){
     // printf("keys_with_prefix() called for prefix: %s\n", prefix);
  
     const int MAX_LENGTH = 1000;
-    char** list = calloc(MAX_LENGTH, sizeof(char*)); 
+    char** list = (char**)malloc(MAX_LENGTH*sizeof(char*));
+
     int total_words = 0;
     list[0] = NULL;
 
@@ -236,7 +234,7 @@ char** keys_with_prefix(trie_t trie, char* prefix){
     unlock(&t->node_lock);
 
     // now from this node, find all words and add prefix in the starting
-    char* _prefix = malloc(MAX_LENGTH*sizeof(char));
+    char* _prefix = malloc(100*sizeof(char));
     strcpy(_prefix, prefix);
 
 
