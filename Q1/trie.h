@@ -37,6 +37,10 @@ typedef _trie_t* trie_t;
         `make rw_lock`
 
     make test_trie_single_threaded && make single_threaded
+    make test_trie_s_lock && make s_lock
+    make test_trie_rw_lock && make rw_lock
+
+
 */
 
 

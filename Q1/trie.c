@@ -46,10 +46,9 @@ void insert(trie_t trie, char* key, int value){
 int find(trie_t trie, char* key, int* val_ptr){
     // printf("find() called.\n");
     // Write your code here
-    int key_length = strlen(key);
     trie_node_t x = trie->head;
     
-    for(int i = 0; i<key_length; i++){
+    for(int i = 0; i<strlen(key); i++){
         int index = key[i] - 'a';
 
 
@@ -94,7 +93,6 @@ int _rec_delete(trie_node_t t, char* key, int curr_depth){
         if(t->is_end){
             t->is_end = false;
             t->value = 0;
-
 
             if(is_empty(t)){
                 free(t);
@@ -199,12 +197,12 @@ char** keys_with_prefix(trie_t trie, char* prefix){
     }
 
     // now from this node, find all words and add prefix in the starting
-    char* _prefix = calloc(MAX_LENGTH, sizeof(char));
+    char* _prefix = malloc(MAX_LENGTH*sizeof(char));
     strcpy(_prefix, prefix);
 
 
+    // hope this function works correctly
     _rec_auto_comp(t, _prefix, strlen(_prefix), list, &total_words);
-    // hope the above function works correctly
 
     // printf("returning list from keys_with_prefix(),\ntotal words returning: %d\n", total_words);
     return list;
@@ -229,8 +227,8 @@ void _rec_delete_node(trie_node_t t){
 }
 
 void delete_trie(trie_t trie){
-    // Write your code here
     _rec_delete_node(trie->head);
+
     free(trie);
     trie = NULL;
 }
