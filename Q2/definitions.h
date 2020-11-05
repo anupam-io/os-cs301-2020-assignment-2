@@ -24,7 +24,7 @@ typedef enum enum_workloads{LOOP, RANDOM, LOCAL}WorkloadsT;
 //----------------------------------------------------------------
 /* ALL STRUCTS HERE */
 
-struct workload
+typedef struct workload
 {
 	// Defines type of workload
 	WorkloadsT type;
@@ -34,20 +34,20 @@ struct workload
 	int size;
 	// The final work to run the policy
 	int * work;
-};
+}workload;
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
 /* ALL FUNCTION DEFINITIONS HERE */
 
-struct workload * generate_workload(WorkloadsT type, int pages, int size);
-struct workload * generate_random(struct workload * w);
-struct workload * generate_loop(struct workload * w);
-struct workload * generate_local(struct workload * w);
+workload * generate_workload(WorkloadsT type, int pages, int size);
+workload * generate_random(workload* w);
+workload * generate_loop(workload* w);
+workload * generate_local(workload* w);
 
-float policy_FIFO(struct workload * w, int cache_size);
-float policy_LRU(struct workload * w, int cache_size);
-float policy_RANDOM(struct workload * w, int cache_size);
-float policy_LRUapprox(struct workload * w, int cache_size);
+float policy_FIFO(workload* w, int cache_size);
+float policy_LRU(workload* w, int cache_size);
+float policy_RANDOM(workload* w, int cache_size);
+float policy_LRUapprox(workload* w, int cache_size);
 
 #endif /* __DEF_H__ */
