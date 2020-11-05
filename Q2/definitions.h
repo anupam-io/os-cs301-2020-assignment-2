@@ -89,6 +89,13 @@ void push(queue* q, int data);
 
 /*
 	finds the val in the queue
+		> if found, return 1
+		> if not found, return 0
+*/
+int find(queue* q, int val);
+
+/*
+	finds the val in the queue
 		> if found remove it and return 1
 		> if not found return 0
 */

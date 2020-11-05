@@ -26,7 +26,7 @@ void printQueue(queue* q){
 
 int main(int argc, char* argv[])
 {
-	workload* w = generate_workload(RANDOM, 10, 100);
+	workload* w = generate_workload(RANDOM, 20, 1000);
 
 	for(int i = 1; i<=10; i++){
 		printf("Random workload on FIFO policy: %f\n", policy_FIFO(w, i));
@@ -35,6 +35,12 @@ int main(int argc, char* argv[])
 
 	for(int i = 1; i<=10; i++){
 		printf("Random workload on random policy: %f\n", policy_RANDOM(w, i));
+	}
+	printf("---------\n");
+	
+
+	for(int i = 1; i<=10; i++){
+		printf("Random workload on LRU policy: %f\n", policy_LRU(w, i));
 	}
 	
 

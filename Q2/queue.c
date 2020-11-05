@@ -31,6 +31,21 @@ void push(queue* q, int data){
     q->curr_size++;
 }
 
+
+int find(queue* q, int val){
+    qnode* t = q->front;
+    while(t!=NULL){
+        if(t->data == val){
+            return 1;
+        }
+
+        t = t->next;
+    }
+
+    return 0;
+}
+
+
 int find_and_remove(queue* q, int val){
     qnode* t = q->front;
     while(t!=NULL){
@@ -65,6 +80,7 @@ int find_and_remove(queue* q, int val){
 
     return 0;
 }
+
 
 void pop(queue* q){
     qnode* t = q->front;
