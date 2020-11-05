@@ -11,13 +11,35 @@ You may include a function or 2 to ease the printing of tables.
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include "policy.c"
 #include "definitions.h"
+#include "policy.c"
 #include "workload.c"
+#include "queue.c"
+
+void printQueue(queue* q){
+	qnode* x = q->front;
+	while (x){
+		printf("%d ", x->data);
+		x = x->next;
+	} printf("\n");
+}
 
 int main(int argc, char* argv[])
-{	
+{
+	workload* w = generate_workload(RANDOM, 10, 100);
+
+	for(int i = 1; i<=10; i++){
+		printf("Random workload on FIFO policy: %f\n", policy_FIFO(w, i));
+	}
+	
+
+
+/*
 	workload* w;
+	w = generate_workload(RANDOM, 10, 100);
+	int cache_size = 5;
+	printf("policy_FIFO: %f\n", policy_FIFO(w, cache_size));
+
 
 	printf("Loop workload\n");
 	w = generate_workload(LOOP, 10, 100);
@@ -41,6 +63,7 @@ int main(int argc, char* argv[])
 	for(int i = 0; i<w->pages; i++){
 		printf("%d: %d\n", i, fr[i]);
 	}
+*/
 	
 	return 0;
 }

@@ -10,6 +10,7 @@ You may add extra definitions as required.
 #ifndef __DEF_H__
 #define __DEF_H__
 
+#include <stdio.h>
 //----------------------------------------------------------------
 //----------------------------------------------------------------
 /* ALL ENUMERATORS HERE */
@@ -35,6 +36,18 @@ typedef struct workload
 	// The final work to run the policy
 	int * work;
 }workload;
+
+typedef struct qnode{
+	int data;
+	struct qnode* next;
+	struct qnode* prev;
+} qnode;
+
+typedef struct queue{
+	qnode* front;
+	qnode* back;
+	int curr_size;	
+} queue;
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
@@ -64,5 +77,26 @@ float policy_FIFO(workload* w, int cache_size);
 float policy_LRU(workload* w, int cache_size);
 float policy_RANDOM(workload* w, int cache_size);
 float policy_LRUapprox(workload* w, int cache_size);
+
+// create a new qnode and set the value to val
+qnode* new_node(int val);
+
+// create a empty queue
+queue* new_queue();
+
+// add into the back of the queue
+void push(queue* q, int data);
+
+/*
+	finds the val in the queue
+		> if found remove it and return 1
+		> if not found return 0
+*/
+int find_and_remove(queue* q, int val);
+
+/*
+	removes the front element of the queue
+*/
+void pop(queue* q);
 
 #endif /* __DEF_H__ */
