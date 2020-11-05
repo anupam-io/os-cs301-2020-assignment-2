@@ -40,10 +40,25 @@ typedef struct workload
 //----------------------------------------------------------------
 /* ALL FUNCTION DEFINITIONS HERE */
 
-workload * generate_workload(WorkloadsT type, int pages, int size);
-workload * generate_random(workload* w);
-workload * generate_loop(workload* w);
-workload * generate_local(workload* w);
+/*
+	creates memory for workload parameters and work
+*/
+workload* generate_workload(WorkloadsT type, int pages, int size);
+
+/*
+	generates a random workload
+*/
+workload* generate_random(workload* w);
+
+/*
+	generates 0 - w->pages-1 looping over the w->size
+*/
+workload* generate_loop(workload* w);
+
+/*
+	generates the 80-20 workload(local)
+*/
+workload* generate_local(workload* w);
 
 float policy_FIFO(workload* w, int cache_size);
 float policy_LRU(workload* w, int cache_size);

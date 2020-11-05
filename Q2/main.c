@@ -17,21 +17,30 @@ You may include a function or 2 to ease the printing of tables.
 
 int main(int argc, char* argv[])
 {	
-	int size = 100;
-	int pages = 10;
+	workload* w;
 
-	int* data = (int*)malloc(size*sizeof(int));
-	for(int i = 0; i<size; i++){
-		data[i] = (i*i*i)%pages;
+	printf("Loop workload\n");
+	w = generate_workload(LOOP, 10, 100);
+	for(int i = 0; i<w->size; i++){
+		printf("%d ", w->work[i]);
+	} printf("\n");
+
+
+	printf("Random workload\n");
+	w = generate_workload(RANDOM, 10, 100);
+	for(int i = 0; i<w->size; i++){
+		printf("%d ", w->work[i]);
+	} printf("\n");
+
+
+	printf("Local workload\n");
+	w = generate_workload(LOCAL, 10, 100);
+	int fr[w->pages];
+	for(int i = 0; i<w->pages; i++) fr[i] = 0;
+	for(int i = 0; i<w->size; i++) fr[w->work[i]]++;
+	for(int i = 0; i<w->pages; i++){
+		printf("%d: %d\n", i, fr[i]);
 	}
-
-	workload* w = (workload*)malloc(sizeof(workload));
-	w->type = 0;
-	w->pages = pages;
-	w->size = size;
-	w->work = data;
-
 	
-
 	return 0;
 }
