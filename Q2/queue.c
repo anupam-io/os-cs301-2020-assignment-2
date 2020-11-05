@@ -78,3 +78,12 @@ void pop(queue* q){
         q->curr_size--;
     }
 }
+
+void remove_random(queue* q){
+    int r = rand()%q->curr_size;
+    qnode* a = q->front;
+    for(int i = 0; i<r; i++){
+        a = a->next;
+    }
+    find_and_remove(q, a->data);
+}

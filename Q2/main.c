@@ -31,6 +31,11 @@ int main(int argc, char* argv[])
 	for(int i = 1; i<=10; i++){
 		printf("Random workload on FIFO policy: %f\n", policy_FIFO(w, i));
 	}
+	printf("---------\n");
+
+	for(int i = 1; i<=10; i++){
+		printf("Random workload on random policy: %f\n", policy_RANDOM(w, i));
+	}
 	
 
 

@@ -99,4 +99,9 @@ int find_and_remove(queue* q, int val);
 */
 void pop(queue* q);
 
+/*
+	removes a random element from the queue
+*/
+void remove_random(queue* q);
+
 #endif /* __DEF_H__ */

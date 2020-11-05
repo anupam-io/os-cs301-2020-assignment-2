@@ -14,11 +14,6 @@ float policy_FIFO(workload* w, int cache_size)
 	queue* q = new_queue();
 
 	for(int i = 0; i<w->size; i++){
-		// if i in cache
-		// mark it as a hit
-		// else if i is not in cache
-		// remove the last element in the cache
-		// insert i into the cache
 		if(find_and_remove(q, w->work[i]) == 1){
 			hits++;
 			push(q, w->work[i]);
@@ -49,7 +44,21 @@ float policy_LRUapprox(workload* w, int cache_size)
 
 float policy_RANDOM(workload* w, int cache_size)
 {
-	float hit_rate = 0;
-	/* fill this */
-	return hit_rate;
+	// the percept of references found in memory
+	int hits = 0;
+	queue* q = new_queue();
+
+	for(int i = 0; i<w->size; i++){
+		if(find_and_remove(q, w->work[i]) == 1){
+			hits++;
+			push(q, w->work[i]);
+		} else {
+			push(q, w->work[i]);
+			if(q->curr_size > cache_size){
+				remove_random(q);
+			}
+		}
+	}
+
+	return (float)(hits*100/w->size);
 }
