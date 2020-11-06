@@ -78,6 +78,7 @@ float policy_FIFO(workload* w, int cache_size);
 float policy_LRU(workload* w, int cache_size);
 float policy_RANDOM(workload* w, int cache_size);
 float policy_LRUapprox(workload* w, int cache_size);
+void test_all(workload* w, int cache_size);
 
 
 /*
@@ -123,4 +124,9 @@ void remove_random(queue* q);
 	copies the source queue and return the copied queue
 */
 queue* copy_queue(queue* source);
+
+/*
+	printing the queue
+*/
+void print_queue(queue* q);
 #endif /* __DEF_H__ */

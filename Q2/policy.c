@@ -35,7 +35,7 @@ float policy_LRU(workload* w, int cache_size)
 
 	for(int i = 0; i<w->size; i++){
 		if(find_and_remove(q, w->work[i]) == 1){
-			hits++;
+            hits++;
 			push(q, w->work[i]);
 		} else {
 			push(q, w->work[i]);
@@ -141,7 +141,7 @@ float policy_LRUapprox(workload* w, int cache_size)
             } 
             
             hits++; 
-        } 
+        }         
     }
     
 	return (float)(hits*100/w->size);
@@ -165,4 +165,14 @@ float policy_RANDOM(workload* w, int cache_size)
 	}
 
 	return (float)(hits*100/w->size);
+}
+
+void test_all(workload* w, int cache_size){
+    printf("%d, %f, %f, %f, %f\n", 
+        cache_size, 
+        policy_FIFO(w, cache_size),
+        policy_RANDOM(w, cache_size),
+        policy_LRU(w, cache_size),
+        policy_LRUapprox(w, cache_size)
+    );
 }

@@ -40,7 +40,6 @@ workload* generate_random(workload* w)
 
 workload* generate_loop(workload* w)
 {
-    printf("loop called.\n");
     int ind = 0, i = 0;
 
     while(ind!=w->size){

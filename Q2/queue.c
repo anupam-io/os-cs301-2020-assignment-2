@@ -118,3 +118,12 @@ queue* copy_queue(queue* source){
     }
     return target;
 }
+
+void print_queue(queue* q){
+    qnode* p = q->front;
+    while(p){
+        printf("%d ", p->data);
+        p = p->next;
+    }
+    printf("\n");
+}
