@@ -73,18 +73,26 @@ workload* generate_loop(workload* w);
 */
 workload* generate_local(workload* w);
 
+
 float policy_FIFO(workload* w, int cache_size);
 float policy_LRU(workload* w, int cache_size);
 float policy_RANDOM(workload* w, int cache_size);
 float policy_LRUapprox(workload* w, int cache_size);
 
-// create a new qnode and set the value to val
+
+/*
+	create a new qnode and set the value to val
+*/
 qnode* new_node(int val);
 
-// create a empty queue
+/*
+	create a empty queue
+*/
 queue* new_queue();
 
-// add into the back of the queue
+/*
+	add into the back of the queue
+*/
 void push(queue* q, int data);
 
 /*
@@ -111,4 +119,8 @@ void pop(queue* q);
 */
 void remove_random(queue* q);
 
+/*
+	copies the source queue and return the copied queue
+*/
+queue* copy_queue(queue* source);
 #endif /* __DEF_H__ */

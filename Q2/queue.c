@@ -83,6 +83,10 @@ int find_and_remove(queue* q, int val){
 
 
 void pop(queue* q){
+    if(q->curr_size == 0){
+        printf("pop() called on empty queue.\n");
+    }
+
     qnode* t = q->front;
     if(t){
         qnode* new_front = t->next;
@@ -102,4 +106,15 @@ void remove_random(queue* q){
         a = a->next;
     }
     find_and_remove(q, a->data);
+}
+
+queue* copy_queue(queue* source){
+    queue* target = new_queue();
+    qnode* t = source->front;
+
+    while(t){
+        push(target, t->data);
+        t = t->next;
+    }
+    return target;
 }
