@@ -1,70 +1,46 @@
 import csv
 import matplotlib.pyplot as plt
 
-cache_size = []
-fifo = []
-rndm = []
-lru = []
-applru = []
+cache_size = [[], [], []]
+fifo = [[], [], []]
+rndm = [[], [], []]
+lru = [[], [], []]
+applru = [[], [], []]
 
+g = 0
 with open('outputs.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     for row in csv_reader:
         if len(row) == 0:
-            break
+            g = g + 1
+            if g == 4:
+                break
+            else:
+                continue
         
-        cache_size.append(int(row[0]))
-        fifo.append(float(row[1]))
-        rndm.append(float(row[2]))
-        lru.append(float(row[3]))
-        applru.append(float(row[4]))
+        cache_size[g].append(int(row[0]))
+        fifo[g].append(float(row[1]))
+        rndm[g].append(float(row[2]))
+        lru[g].append(float(row[3]))
+        applru[g].append(float(row[4]))
         line_count += 1
 
 # SHOW THIS GRAPH
 
-  
+fig, ax = plt.subplots(1, 3, sharex=True, sharey=True)
+for i in range(3):
+    ax[i].plot(cache_size[i], fifo[i], label = 'fifo', ls = ('dashed'), linewidth = 3)
+    ax[i].plot(cache_size[i], rndm[i], label = 'rndm', ls = ('dotted'), linewidth = 3)
+    ax[i].plot(cache_size[i], lru[i], label = 'lru', ls = ('dotted'), linewidth = 3)
+    ax[i].plot(cache_size[i], applru[i], label = 'applru', ls = ('dotted'), linewidth = 5)
+    ax[i].legend(['fifo', 'rndm', 'lru', 'applru'])
 
-plt.plot(cache_size, fifo, 'o', label = 'fifo', ls = ('dotted'), linewidth = 1) 
-plt.plot(cache_size, rndm, 's', label = 'rndm', ls = ('dotted'), linewidth = 2) 
-plt.plot(cache_size, lru, 'd', label = 'lru', ls = ('dotted'), linewidth = 3) 
-plt.plot(cache_size, applru, 'v', label = 'applru', ls = ('dotted'), linewidth = 4) 
-  
-# naming the x-axis 
-plt.xlabel('cache-size') 
-  
-# naming the y-axis 
-plt.ylabel('hit rate') 
-  
-  
-# get current axes command 
-ax = plt.gca() 
-  
-# set the interval by  which  
-# the x-axis set the marks 
-plt.xticks(list(range(0, 110, 10))) 
-  
-# set the intervals by which y-axis 
-# set the marks 
-plt.yticks(list(range(0, 110, 10))) 
-  
-# legend denotes that what color  
-# signifies what 
-ax.legend(['fifo', 'rndm', 'lru', 'applru']) 
+ax[0].set_title('LOOP workload')
+ax[1].set_title('RANDOM workload')
+ax[2].set_title('LOCAL workload')
+fig.suptitle('Cache Page Replacement policies performance')   
+ 
+print(cache_size)
 
-# gives a title to the Graph 
-plt.title('Cache Page Replacement policies performance')   
 plt.show() 
-
-
-
-
-# plt.plot(cache_size, fifo)
-# plt.plot(cache_size, rndm)
-# plt.plot(cache_size, lru)
-# plt.plot(cache_size, applru)
-
-
-# plt.xlabel('cache-size') 
-# plt.ylabel('hit rate')
-# plt.show()

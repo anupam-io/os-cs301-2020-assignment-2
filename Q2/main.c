@@ -27,19 +27,19 @@ void printQueue(queue* q){
 int main(int argc, char* argv[])
 {
 	workload* w;
-	w = generate_workload(LOOP, 50, 10000);
+	w = generate_workload(LOOP, 50, 100000);
 	for(int cs = 1; cs<=10; cs++){
 		test_all(w, 10*cs);
 	}
 	printf("\n");
 	
-	w = generate_workload(RANDOM, 50, 10000);
+	w = generate_workload(RANDOM, 50, 100000);
 	for(int cs = 1; cs<=10; cs++){
 		test_all(w, 10*cs);
 	}
 	printf("\n");
 	
-	w = generate_workload(LOCAL, 50, 10000);
+	w = generate_workload(LOCAL, 50, 100000);
 	for(int cs = 1; cs<=10; cs++){
 		test_all(w, 10*cs);
 	}
