@@ -6,7 +6,7 @@ This file will contain all the functions related to the generation of workload
 */
 
 #include "definitions.h"
-#include "time.h"
+#include <time.h>
 
 workload* generate_workload(WorkloadsT type, int pages, int size)
 {

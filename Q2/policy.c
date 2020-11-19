@@ -6,6 +6,7 @@ Each policy must return the hit rate
 */
 
 #include "definitions.h"
+#include <time.h>
 
 float policy_FIFO(workload* w, int cache_size)
 {
@@ -168,11 +169,38 @@ float policy_RANDOM(workload* w, int cache_size)
 }
 
 void test_all(workload* w, int cache_size){
+    float fifo, random, lru, applru;
+    float t_fifo, t_random, t_lru, t_applru;
+    
+    clock_t st, fin;
+
+    st = clock();
+    fifo = policy_FIFO(w, cache_size);
+    fin = clock();
+    t_fifo = (double)(fin - st) / CLOCKS_PER_SEC;
+
+    st = clock();
+    random = policy_RANDOM(w, cache_size);
+    fin = clock();
+    t_random = (double)(fin - st) / CLOCKS_PER_SEC;
+
+    st = clock();
+    lru = policy_LRU(w, cache_size);
+    fin = clock();
+    t_lru = (double)(fin - st) / CLOCKS_PER_SEC;
+
+    st = clock();
+    applru = policy_LRUapprox(w, cache_size);
+    fin = clock();
+    t_applru = (double)(fin - st) / CLOCKS_PER_SEC;
+
+    fprintf(tp, "%d, %f, %f, %f, %f\n", 
+        cache_size,
+        t_fifo, t_random, t_lru, t_applru
+    );
+
     printf("%d, %f, %f, %f, %f\n", 
-        cache_size, 
-        policy_FIFO(w, cache_size),
-        policy_RANDOM(w, cache_size),
-        policy_LRU(w, cache_size),
-        policy_LRUapprox(w, cache_size)
+        cache_size,
+        fifo, random, lru, applru 
     );
 }

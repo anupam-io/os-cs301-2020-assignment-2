@@ -17,3 +17,4 @@ Workloads: 80-20, looping, random
 6. The work in workload corresponds to a the sequence of pages where each page is represented by an integer.
 
 *Note: In the code, 80-20 is mentioned as local.*
+

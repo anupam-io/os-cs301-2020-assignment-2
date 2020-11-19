@@ -16,72 +16,30 @@ You may include a function or 2 to ease the printing of tables.
 #include "workload.c"
 #include "queue.c"
 
-void printQueue(queue* q){
-	qnode* x = q->front;
-	while (x){
-		printf("%d ", x->data);
-		x = x->next;
-	} printf("\n");
-}
-
 int main(int argc, char* argv[])
 {
+	tp = fopen("timings.csv", "w");
+
 	workload* w;
 	w = generate_workload(LOOP, 50, 100000);
 	for(int cs = 1; cs<=10; cs++){
 		test_all(w, 10*cs);
 	}
 	printf("\n");
+	fprintf(tp, "\n");
+
 	
 	w = generate_workload(RANDOM, 50, 100000);
 	for(int cs = 1; cs<=10; cs++){
 		test_all(w, 10*cs);
 	}
 	printf("\n");
+	fprintf(tp, "\n");
 	
 	w = generate_workload(LOCAL, 50, 100000);
 	for(int cs = 1; cs<=10; cs++){
 		test_all(w, 10*cs);
 	}
-	
-	
-	
-	
-	
-	
 
-
-
-/*
-	workload* w;
-	w = generate_workload(RANDOM, 10, 100);
-	int cache_size = 5;
-	printf("policy_FIFO: %f\n", policy_FIFO(w, cache_size));
-
-
-	printf("Loop workload\n");
-	w = generate_workload(LOOP, 10, 100);
-	for(int i = 0; i<w->size; i++){
-		printf("%d ", w->work[i]);
-	} printf("\n");
-
-
-	printf("Random workload\n");
-	w = generate_workload(RANDOM, 10, 100);
-	for(int i = 0; i<w->size; i++){
-		printf("%d ", w->work[i]);
-	} printf("\n");
-
-
-	printf("Local workload\n");
-	w = generate_workload(LOCAL, 10, 100);
-	int fr[w->pages];
-	for(int i = 0; i<w->pages; i++) fr[i] = 0;
-	for(int i = 0; i<w->size; i++) fr[w->work[i]]++;
-	for(int i = 0; i<w->pages; i++){
-		printf("%d: %d\n", i, fr[i]);
-	}
-*/
-	
 	return 0;
 }

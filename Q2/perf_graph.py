@@ -8,7 +8,7 @@ lru = [[], [], []]
 applru = [[], [], []]
 
 g = 0
-with open('outputs.csv') as csv_file:
+with open('timings.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     for row in csv_reader:
@@ -30,17 +30,18 @@ with open('outputs.csv') as csv_file:
 
 fig, ax = plt.subplots(1, 3, sharex=True, sharey=True)
 for i in range(3):
-    ax[i].plot(cache_size[i], fifo[i], label = 'fifo', ls = ('dashed'), linewidth = 3)
-    ax[i].plot(cache_size[i], rndm[i], label = 'rndm', ls = ('dotted'), linewidth = 3)
+    ax[i].plot(cache_size[i], fifo[i], label = 'fifo', ls = ('dashed'), linewidth = 2)
+    ax[i].plot(cache_size[i], rndm[i], label = 'rndm', ls = ('dotted'), linewidth = 2)
     ax[i].plot(cache_size[i], lru[i], label = 'lru', ls = ('dotted'), linewidth = 3)
-    ax[i].plot(cache_size[i], applru[i], label = 'applru', ls = ('dotted'), linewidth = 5)
+    ax[i].plot(cache_size[i], applru[i], label = 'applru', ls = ('dotted'), linewidth = 3)
     ax[i].legend(['fifo', 'rndm', 'lru', 'applru'])
+    ax[i].set(xlabel='Cache size', ylabel='Time(in ms)')
+
 
 ax[0].set_title('LOOP workload')
 ax[1].set_title('RANDOM workload')
 ax[2].set_title('LOCAL workload')
 fig.suptitle('Cache Page Replacement policies performance')   
- 
-print(cache_size)
 
-plt.show() 
+fig.set_size_inches(8, 6)
+plt.savefig('plots/tm_graph.png', dpi=300)
