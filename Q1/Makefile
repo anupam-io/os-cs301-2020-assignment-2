@@ -58,8 +58,6 @@ clean:
 # Add your rules after this point. Don't edit the things above:
 
 
-
-
 update:
 	rm -f -r test_trie_s_lock.c
 	rm -f -r test_trie_single_threaded.c
@@ -67,6 +65,10 @@ update:
 	curl https://gist.githubusercontent.com/alphatron1999/5d3e39a3a463d349121978b8e70f8090/raw/fdba018d42132874eef3460b552cfbb62bedf891/test_trie_single_threaded.c > test_trie_single_threaded.c
 
 wl_hoh:
+	@mkdir wl -p
 	@gcc wl_hoh_lock.c -o wl_hoh_lock -Wall -Werror -pthread -g -w
-	@./wl_hoh_lock
+	@./wl_hoh_lock > /dev/null 
 	@rm -f -r wl_hoh_lock
+
+_clean:
+	@rm -f -r wl
