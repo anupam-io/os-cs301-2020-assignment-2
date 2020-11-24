@@ -82,21 +82,25 @@ int find_and_remove(queue* q, int val){
 }
 
 
-void pop(queue* q){
+int pop(queue* q){
     if(q->curr_size == 0){
         printf("pop() called on empty queue.\n");
+        return -1;
     }
 
+    
     qnode* t = q->front;
-    if(t){
-        qnode* new_front = t->next;
-        free(t);
-        if(new_front){
-            new_front->prev = NULL;
-        }
-        q->front = new_front;
-        q->curr_size--;
+    int ret = q->front->data;
+    
+    qnode* new_front = t->next;
+    free(t);
+    if(new_front){
+        new_front->prev = NULL;
     }
+    q->front = new_front;
+    q->curr_size--;
+    
+    return ret;
 }
 
 void remove_random(queue* q){

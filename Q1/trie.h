@@ -54,7 +54,7 @@ typedef _trie_t* trie_t;
     make test_trie_single_threaded && make single_threaded
     make test_trie_s_lock && make s_lock
     make test_trie_rw_lock && make rw_lock
-    make test_trie_hoh_lock && make rw_lock
+    make test_trie_hoh_lock && make hoh_lock
     
 
 
@@ -93,13 +93,6 @@ int find(trie_t trie, char* key, int* val_ptr);
     has any descendants or not
 */
 int is_empty(trie_node_t);
-
-
-/*
-    Added: recursively function to delete the nodes.
-*/
-int _rec_delete(trie_node_t t, char* key, int curr_depth);
-
 
 /*
     delete_kv(trie_t trie, char* key) deletes the key and its value from the trie if it is present.

@@ -21,24 +21,24 @@ int main(int argc, char* argv[])
 	tp = fopen("timings.csv", "w");
 
 	workload* w;
-	w = generate_workload(LOOP, 50, 100000);
-	for(int cs = 1; cs<=10; cs++){
-		test_all(w, 10*cs);
+	w = generate_workload(LOOP, 100, 10000);
+	for(int cs = 1; cs<=100; cs++){
+		test_all(w, cs);
 	}
 	printf("\n");
 	fprintf(tp, "\n");
 
 	
-	w = generate_workload(RANDOM, 50, 100000);
-	for(int cs = 1; cs<=10; cs++){
-		test_all(w, 10*cs);
+	w = generate_workload(RANDOM, 100, 10000);
+	for(int cs = 1; cs<=100; cs++){
+		test_all(w, cs);
 	}
 	printf("\n");
 	fprintf(tp, "\n");
 	
-	w = generate_workload(LOCAL, 50, 100000);
-	for(int cs = 1; cs<=10; cs++){
-		test_all(w, 10*cs);
+	w = generate_workload(LOCAL, 100, 10000);
+	for(int cs = 1; cs<=100; cs++){
+		test_all(w, cs);
 	}
 
 	return 0;

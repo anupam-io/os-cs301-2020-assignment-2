@@ -115,7 +115,7 @@ int find_and_remove(queue* q, int val);
 /*
 	removes the front element of the queue
 */
-void pop(queue* q);
+int pop(queue* q);
 
 /*
 	removes a random element from the queue

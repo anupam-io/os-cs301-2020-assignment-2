@@ -1,4 +1,4 @@
-all_targets:= compile run plotting clean
+all_targets:= compile run plotting clean show
 
 all: ${all_targets}
 
@@ -22,3 +22,6 @@ clean:
 	@rm -r -f outputs.csv
 	@rm -r -f timings.csv
 	@echo "All Cleaned."
+
+show:
+	@google-chrome --new-window --disable-gpu --disable-software-rasterizer -kiosk Solutions.md &

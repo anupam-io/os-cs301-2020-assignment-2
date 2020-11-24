@@ -6,30 +6,67 @@
 #include <pthread.h>
 #include "trie.h"
 
+void r_lock(trie_t x){
+    #ifndef _NO_HOH_LOCK_TRIE
+        ;
+    #else
+        #ifdef _S_LOCK_TRIE
+            pthread_mutex_lock(&x->s_lock);
+        #else
+            pthread_rwlock_rdlock(&x->rw_lock);
+        #endif
+    #endif
+}
+
+void w_lock(trie_t x){
+    #ifndef _NO_HOH_LOCK_TRIE
+        ;
+    #else
+        #ifdef _S_LOCK_TRIE
+            pthread_mutex_lock(&x->s_lock);
+        #else
+            pthread_rwlock_wrlock(&x->rw_lock);
+        #endif
+    #endif
+}
+void unlock(trie_t x){
+    #ifndef _NO_HOH_LOCK_TRIE
+        ;
+    #else
+        #ifdef _S_LOCK_TRIE
+            pthread_mutex_unlock(&x->s_lock);
+        #else
+            pthread_rwlock_unlock(&x->rw_lock);
+        #endif
+    #endif   
+}
+
+
+/*
 #ifndef _NO_HOH_LOCK_TRIE
 // HOH_LOCK_TRIE
-// temporarily same as st and s_lock
     #define r_lock(x) ;
     #define w_lock(x) ;
     #define unlock(x) ;
-
-#endif
-
-#ifdef _NO_HOH_LOCK_TRIE
+#else
     #ifdef _S_LOCK_TRIE
     // S_LOCK_TRIE AS WELL AS ST_TRIE
         #define r_lock(x) pthread_mutex_lock(&x->s_lock)
         #define w_lock(x) pthread_mutex_lock(&x->s_lock)
         #define unlock(x) pthread_mutex_unlock(&x->s_lock)
-    #endif
-
-    #ifndef _S_LOCK_TRIE
+    #else
     // RW_LOCK_TRIE
-        #define r_lock(x) pthread_rwlock_rdlock(&x->rw_lock)
+        #define r_lock(x) pthread_rwlock_rdlock(&x-rw_lock)
         #define w_lock(x) pthread_rwlock_wrlock(&x->rw_lock)
         #define unlock(x) pthread_rwlock_unlock(&x->rw_lock)
     #endif
 #endif
+*/
+
+
+
+
+
 
 trie_node_t new_node(){
     // printf("new_node() called.\n");
@@ -51,24 +88,45 @@ trie_node_t new_node(){
 
 trie_t init_trie(void){
     // printf("init_trie() called.\n");
-    
+    #ifndef _NO_HOH_LOCK_TRIE
+        printf("*\n*\n*\n*\n*\nHOH_LOCK_TRIE\n*\n*\n*\n*\n*\n");
+    #else
+        #ifdef _S_LOCK_TRIE
+            printf("*\n*\n*\n*\n*\nS_LOCK_TRIE\n*\n*\n*\n*\n*\n");
+        #else
+            printf("*\n*\n*\n*\n*\nRW_LOCK_TRIE\n*\n*\n*\n*\n*\n");
+        #endif
+    #endif
+
+
+
     trie_t a = (trie_t)malloc(sizeof(_trie_t));
     a->head = new_node();
     
+
     #ifdef _S_LOCK_TRIE
         pthread_mutex_init(&a->s_lock, NULL);
     #endif
+
     #ifdef _NO_HOH_LOCK_TRIE
-        #ifndef _S_LOCK_TRIE     
-            pthread_rwlock_init(&a->s_lock, NULL);
+        #ifndef _S_LOCK_TRIE
+            pthread_rwlock_init(&a->rw_lock, NULL);
         #endif
     #endif
+
     return a;
 }
 
 void insert(trie_t trie, char* key, int value){
     // printf("insert() called.\n");
     w_lock(trie);
+
+    #ifndef _NO_HOH_LOCK_TRIE
+        pthread_mutex_t *l1, *l2;
+        l1 = l2 = NULL;
+        l2 = &trie->head->node_lock;
+        pthread_mutex_lock(&(*l2));   
+    #endif
 
     trie_node_t x = trie->head;
     
@@ -77,10 +135,24 @@ void insert(trie_t trie, char* key, int value){
             x->children[key[i] - 'a'] = new_node();
         }
         x = x->children[key[i] - 'a'];
+
+        #ifndef _NO_HOH_LOCK_TRIE
+            if(l1){
+                pthread_mutex_unlock(&(*l1));
+            }
+            l1 = l2;
+            l2 = &x->node_lock;
+            pthread_mutex_lock(&(*l2));
+        #endif
     }
 
     x->is_end = true;
     x->value = value;
+
+    #ifndef _NO_HOH_LOCK_TRIE
+        if(l1){ pthread_mutex_unlock(&(*l1)); }
+        if(l2){ pthread_mutex_unlock(&(*l2)); }
+    #endif
 
     unlock(trie);
 }
@@ -88,6 +160,14 @@ void insert(trie_t trie, char* key, int value){
 int find(trie_t trie, char* key, int* val_ptr){
     // printf("find() called.\n");
     r_lock(trie);
+    int ret = 70;
+
+    #ifndef _NO_HOH_LOCK_TRIE
+        pthread_mutex_t *l1, *l2;
+        l1 = l2 = NULL;
+        l2 = &trie->head->node_lock;
+        pthread_mutex_lock(&(*l2));   
+    #endif
 
     trie_node_t x = trie->head;
 
@@ -96,94 +176,87 @@ int find(trie_t trie, char* key, int* val_ptr){
 
 
         if(x->children[index]){
-            x = x->children[index];
+            x = x->children[index];    
         } else {
-            unlock(trie);
-            return -1;
+            ret = -1;
+            break;
         }
-    }
 
 
-    if(x->is_end){ 
-        *val_ptr = x->value;
-        unlock(trie);
-        return 0;
-    } else {
-        unlock(trie);
-        return -1;
-    }
-}
-
-// Two options here:
-// Either make this function or
-// add another var in the node
-int is_empty(trie_node_t t){
-    for(int i = 0; i<ALP_SIZE; i++){
-        if(t->children[i]){
-            return 0;
-        }
-    }
-    return 1;
-}
-
-int _rec_delete(trie_node_t t, char* key, int curr_depth){
-    // printf("_rec_delete() called, curr_depth: %d\n", curr_depth);
-    // returning 1 means: have deleted this node
-    // returning 0 means: not deleted hence, 
-    // other nodes also won't get deleted as well
-    if(!t){
-        return 0;
-    }
-
-    if(curr_depth == strlen(key)){
-        if(t->is_end){
-            t->is_end = false;
-            t->value = 0;
-
-            if(is_empty(t)){
-                free(t);
-                t = NULL;
-
-                // printf("Last call at depth: %d\n", curr_depth);
-                return 1;
-            } else {
-                return 0;
+        #ifndef _NO_HOH_LOCK_TRIE
+            if(l1){
+                pthread_mutex_unlock(&(*l1));
             }
-        } else {
-            return 0;
-        }
+            l1 = l2;
+            l2 = &x->node_lock;
+            pthread_mutex_lock(&(*l2));
+        #endif
     }
-    
-    if(t->children[key[curr_depth] - 'a']){
-        int res = _rec_delete(t->children[key[curr_depth] - 'a'], key, curr_depth+1);
 
-        if(res == 0){
-            // printf("Call @ depth: %d direct returning\n", curr_depth);
-            return 0;
+    if(ret == 70){
+        if(x->is_end){ 
+            *val_ptr = x->value;
+            ret = 0;
         } else {
-            t->children[key[curr_depth] - 'a'] = NULL;
-
-            if(!t->is_end && is_empty(t)){
-                free(t);
-                t = NULL;
-
-                // printf("Call @ depth: %d NODE DELETED.\n", curr_depth);
-                return 1;
-            } else {
-                
-                // printf("Call @ depth: %d returning without deleting as node has other children.\n ", curr_depth);
-                return 0;
-            }
+            ret = -1;
         }
     }
 
-    return 0;
+    #ifndef _NO_HOH_LOCK_TRIE
+        if(l1){ pthread_mutex_unlock(&(*l1)); }
+        if(l2){ pthread_mutex_unlock(&(*l2)); }
+    #endif
+
+    unlock(trie);
+    return ret;
 }
 
 void delete_kv(trie_t trie, char* key){
-    // printf("delete_kv() called.\n");
-    w_lock(trie);
-    _rec_delete(trie->head, key, 0);
+  // printf("find() called.\n");
+    int ret = 0;
+    r_lock(trie);
+
+    #ifndef _NO_HOH_LOCK_TRIE
+        pthread_mutex_t *l1, *l2;
+        l1 = l2 = NULL;
+        l2 = &trie->head->node_lock;
+        pthread_mutex_lock(&(*l2));   
+    #endif
+
+    trie_node_t x = trie->head;
+
+    for(int i = 0; i<strlen(key); i++){
+        int index = key[i] - 'a';
+
+        if(x->children[index]){
+            x = x->children[index];    
+        } else {
+            ret = 1;
+            break;
+        }
+
+        #ifndef _NO_HOH_LOCK_TRIE
+            if(l1){
+                pthread_mutex_unlock(&(*l1));
+            }
+            l1 = l2;
+            l2 = &x->node_lock;
+            pthread_mutex_lock(&(*l2));
+        #endif
+    }
+
+    if(ret == 0){
+        if(x->is_end){ 
+            x->is_end = false;
+            ret = 1;
+        }
+    }
+
+    #ifndef _NO_HOH_LOCK_TRIE
+        if(l1){ pthread_mutex_unlock(&(*l1)); }
+        if(l2){ pthread_mutex_unlock(&(*l2)); }
+    #endif
+
     unlock(trie);
 }
 
@@ -196,19 +269,13 @@ void _rec_auto_comp(trie_node_t t, char* curr_prefix, int curr_depth, char** lis
     if (t->is_end)
     { 
         // insert currPrefix into the list
-        *total_words = (*total_words)+1;
-        list[*total_words - 1] = (char*)malloc((strlen(curr_prefix)+1)*sizeof(curr_prefix[0]));
-        strcpy(list[*total_words-1], curr_prefix);
+        list[*total_words] = (char*)malloc((strlen(curr_prefix)+1)*sizeof(curr_prefix[0]));
+        strcpy(list[*total_words], curr_prefix);
+        *total_words = *total_words + 1;
 
         list[*total_words] = NULL;
     } 
   
-
-    // if no further children down below
-    if (is_empty(t)){
-        return;
-    } 
-
     for (int i = 0; i < ALP_SIZE; i++) 
     { 
         if (t->children[i]) 
@@ -245,6 +312,7 @@ char** keys_with_prefix(trie_t trie, char* prefix){
             t = t->children[prefix[i] - 'a'];
         } else {
             // no words found with given prefix
+            unlock(trie);
             return list;
         }
     }
@@ -258,6 +326,8 @@ char** keys_with_prefix(trie_t trie, char* prefix){
     _rec_auto_comp(t, _prefix, strlen(_prefix), list, &total_words);
 
     // printf("returning list from keys_with_prefix(),\ntotal words returning: %d\n", total_words);
+    unlock(trie);
+    free(_prefix);
     return list;
 }
 
@@ -266,24 +336,18 @@ void _rec_delete_node(trie_node_t t){
         return;
     }
 
-    if(t->is_end){
-        free(t);
-        t = NULL;
-        return;
-    } 
-
     for(int i = 0; i<ALP_SIZE; i++){
         if(t->children[i]){
             _rec_delete_node(t->children[i]);
         }
     }
+
+    free(t);
 }
 
 void delete_trie(trie_t trie){
     _rec_delete_node(trie->head);
-
     free(trie);
-    trie = NULL;
 }
 
 #endif

@@ -1,7 +1,6 @@
 CC      := gcc
 CCFLAGS := -Wall -Werror -pthread -g
 
-DEPS := trie.h trie.c
 B_TARGETS := test_trie_single_threaded test_trie_s_lock test_trie_rw_lock test_trie_hoh_lock
 R_TARGETS := single_threaded s_lock rw_lock hoh_lock
 ST_TARGETS := single_threaded
@@ -17,7 +16,7 @@ test_trie_hoh_lock.c: test_trie_s_lock.c
 	@tail -n +3 $< > $@
 	@echo Updated $@
 
-$(B_TARGETS): % : %.c $(DEPS)
+$(B_TARGETS): % : %.c
 	@echo Building
 	$(CC) -o $@ $^ $(CCFLAGS)
 
@@ -59,3 +58,7 @@ clean:
 # Add your rules after this point. Don't edit the things above:
 
 
+
+# curl https://gist.githubusercontent.com/alphatron1999/5d3e39a3a463d349121978b8e70f8090/raw/fdba018d42132874eef3460b552cfbb62bedf891/Makefile > Makefile
+# curl https://gist.githubusercontent.com/alphatron1999/5d3e39a3a463d349121978b8e70f8090/raw/fdba018d42132874eef3460b552cfbb62bedf891/test_trie_s_lock.c > test_trie_s_lock.c
+# curl https://gist.githubusercontent.com/alphatron1999/5d3e39a3a463d349121978b8e70f8090/raw/fdba018d42132874eef3460b552cfbb62bedf891/test_trie_single_threaded.c > test_trie_single_threaded.c

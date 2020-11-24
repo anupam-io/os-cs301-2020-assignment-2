@@ -1,5 +1,3 @@
-#define _S_LOCK_TRIE
-#define _NO_HOH_LOCK_TRIE
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
