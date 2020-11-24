@@ -41,33 +41,6 @@ void unlock(trie_t x){
     #endif   
 }
 
-
-/*
-#ifndef _NO_HOH_LOCK_TRIE
-// HOH_LOCK_TRIE
-    #define r_lock(x) ;
-    #define w_lock(x) ;
-    #define unlock(x) ;
-#else
-    #ifdef _S_LOCK_TRIE
-    // S_LOCK_TRIE AS WELL AS ST_TRIE
-        #define r_lock(x) pthread_mutex_lock(&x->s_lock)
-        #define w_lock(x) pthread_mutex_lock(&x->s_lock)
-        #define unlock(x) pthread_mutex_unlock(&x->s_lock)
-    #else
-    // RW_LOCK_TRIE
-        #define r_lock(x) pthread_rwlock_rdlock(&x-rw_lock)
-        #define w_lock(x) pthread_rwlock_wrlock(&x->rw_lock)
-        #define unlock(x) pthread_rwlock_unlock(&x->rw_lock)
-    #endif
-#endif
-*/
-
-
-
-
-
-
 trie_node_t new_node(){
     // printf("new_node() called.\n");
     
@@ -160,7 +133,7 @@ void insert(trie_t trie, char* key, int value){
 int find(trie_t trie, char* key, int* val_ptr){
     // printf("find() called.\n");
     r_lock(trie);
-    int ret = 70;
+    int ret = 100;
 
     #ifndef _NO_HOH_LOCK_TRIE
         pthread_mutex_t *l1, *l2;
@@ -168,7 +141,6 @@ int find(trie_t trie, char* key, int* val_ptr){
         l2 = &trie->head->node_lock;
         pthread_mutex_lock(&(*l2));   
     #endif
-
     trie_node_t x = trie->head;
 
     for(int i = 0; i<strlen(key); i++){
@@ -193,8 +165,8 @@ int find(trie_t trie, char* key, int* val_ptr){
         #endif
     }
 
-    if(ret == 70){
-        if(x->is_end){ 
+    if(ret == 100){
+        if(x->is_end){
             *val_ptr = x->value;
             ret = 0;
         } else {
@@ -207,6 +179,7 @@ int find(trie_t trie, char* key, int* val_ptr){
         if(l2){ pthread_mutex_unlock(&(*l2)); }
     #endif
 
+    // printf("returned from find().\n");
     unlock(trie);
     return ret;
 }

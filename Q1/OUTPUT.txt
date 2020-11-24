@@ -1,0 +1,232 @@
+Building
+gcc -o test_trie_single_threaded test_trie_single_threaded.c -Wall -Werror -pthread -g
+
+-------------------------------------------
+Program Output(test_trie_single_threaded):
+-------------------------------------------
+*
+*
+*
+*
+*
+S_LOCK_TRIE
+*
+*
+*
+*
+*
+[33mTesting Insert...[0m[32mPassed
+[0m[33mTesting Find...[0m[32mPassed
+[33mTesting Delete...[0m[32mPassed
+[0m[33mTesting Prefix...[0m[31mFailure
+[32mSingle threaded trie implementation test completed.
+[0m
+-------------------------------------------
+Valgrind Output(test_trie_single_threaded):
+-------------------------------------------
+==51241== Memcheck, a memory error detector
+==51241== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==51241== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==51241== Command: ./test_trie_single_threaded
+==51241== Parent PID: 51240
+==51241== 
+==51241== 
+==51241== HEAP SUMMARY:
+==51241==     in use at exit: 0 bytes in 0 blocks
+==51241==   total heap usage: 2,918 allocs, 2,918 frees, 662,930 bytes allocated
+==51241== 
+==51241== All heap blocks were freed -- no leaks are possible
+==51241== 
+==51241== For lists of detected and suppressed errors, rerun with: -s
+==51241== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+Building
+gcc -o test_trie_s_lock test_trie_s_lock.c -Wall -Werror -pthread -g
+
+-------------------------------------------
+Program Output(test_trie_s_lock):
+-------------------------------------------
+*
+*
+*
+*
+*
+S_LOCK_TRIE
+*
+*
+*
+*
+*
+[33mTesting Insert...[0m[32mPassed
+[0m[33mTesting Find...
+[0m[33mThread 1: [0m[32mPassed
+[33mThread 2: [0m[32mPassed
+[33mThread 3: [0m[32mPassed
+[33mTesting Delete...[0m[32mPassed
+[0m[33mTesting Prefix...
+[0m[33mThread 1: [0m[32mPassed
+[33mThread 2: [0m[32mPassed
+[33mThread 3: [0m[31mFailure
+[33mTesting Find + Delete...[0m[32mPassed
+[0m[32mMulti threaded trie implementation test completed.
+[0m
+-------------------------------------------
+Valgrind Memcheck Output(test_trie_s_lock):
+-------------------------------------------
+==51263== Memcheck, a memory error detector
+==51263== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==51263== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==51263== Command: ./test_trie_s_lock
+==51263== Parent PID: 51262
+==51263== 
+==51263== 
+==51263== HEAP SUMMARY:
+==51263==     in use at exit: 0 bytes in 0 blocks
+==51263==   total heap usage: 8,256 allocs, 8,256 frees, 1,721,108 bytes allocated
+==51263== 
+==51263== All heap blocks were freed -- no leaks are possible
+==51263== 
+==51263== For lists of detected and suppressed errors, rerun with: -s
+==51263== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+-------------------------------------------
+Valgrind Helgrind Output(test_trie_s_lock):
+-------------------------------------------
+==51298== Helgrind, a thread error detector
+==51298== Copyright (C) 2007-2017, and GNU GPL'd, by OpenWorks LLP et al.
+==51298== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==51298== Command: ./test_trie_s_lock
+==51298== Parent PID: 51297
+==51298== 
+==51298== 
+==51298== Use --history-level=approx or =none to gain increased speed, at
+==51298== the cost of reduced accuracy of conflicting-access information
+==51298== For lists of detected and suppressed errors, rerun with: -s
+==51298== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 9674 from 93)
+Updated test_trie_rw_lock.c
+Building
+gcc -o test_trie_rw_lock test_trie_rw_lock.c -Wall -Werror -pthread -g
+
+-------------------------------------------
+Program Output(test_trie_rw_lock):
+-------------------------------------------
+*
+*
+*
+*
+*
+RW_LOCK_TRIE
+*
+*
+*
+*
+*
+[33mTesting Insert...[0m[32mPassed
+[0m[33mTesting Find...
+[0m[33mThread 1: [0m[32mPassed
+[33mThread 2: [0m[32mPassed
+[33mThread 3: [0m[32mPassed
+[33mTesting Delete...[0m[32mPassed
+[0m[33mTesting Prefix...
+[0m[33mThread 1: [0m[32mPassed
+[33mThread 2: [0m[32mPassed
+[33mThread 3: [0m[31mFailure
+[33mTesting Find + Delete...[0m[32mPassed
+[0m[32mMulti threaded trie implementation test completed.
+[0m
+-------------------------------------------
+Valgrind Memcheck Output(test_trie_rw_lock):
+-------------------------------------------
+==51349== Memcheck, a memory error detector
+==51349== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==51349== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==51349== Command: ./test_trie_rw_lock
+==51349== Parent PID: 51348
+==51349== 
+==51349== 
+==51349== HEAP SUMMARY:
+==51349==     in use at exit: 0 bytes in 0 blocks
+==51349==   total heap usage: 8,256 allocs, 8,256 frees, 1,721,124 bytes allocated
+==51349== 
+==51349== All heap blocks were freed -- no leaks are possible
+==51349== 
+==51349== For lists of detected and suppressed errors, rerun with: -s
+==51349== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+-------------------------------------------
+Valgrind Helgrind Output(test_trie_rw_lock):
+-------------------------------------------
+==51401== Helgrind, a thread error detector
+==51401== Copyright (C) 2007-2017, and GNU GPL'd, by OpenWorks LLP et al.
+==51401== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==51401== Command: ./test_trie_rw_lock
+==51401== Parent PID: 51400
+==51401== 
+==51401== 
+==51401== Use --history-level=approx or =none to gain increased speed, at
+==51401== the cost of reduced accuracy of conflicting-access information
+==51401== For lists of detected and suppressed errors, rerun with: -s
+==51401== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 6197 from 78)
+Updated test_trie_hoh_lock.c
+Building
+gcc -o test_trie_hoh_lock test_trie_hoh_lock.c -Wall -Werror -pthread -g
+
+-------------------------------------------
+Program Output(test_trie_hoh_lock):
+-------------------------------------------
+*
+*
+*
+*
+*
+HOH_LOCK_TRIE
+*
+*
+*
+*
+*
+[33mTesting Insert...[0m[32mPassed
+[0m[33mTesting Find...
+[0m[33mThread 1: [0m[32mPassed
+[33mThread 2: [0m[32mPassed
+[33mThread 3: [0m[32mPassed
+[33mTesting Delete...[0m[32mPassed
+[0m[33mTesting Prefix...
+[0m[33mThread 1: [0m[32mPassed
+[33mThread 2: [0m[32mPassed
+[33mThread 3: [0m[31mFailure
+[33mTesting Find + Delete...[0m[32mPassed
+[0m[32mMulti threaded trie implementation test completed.
+[0m
+-------------------------------------------
+Valgrind Memcheck Output(test_trie_hoh_lock):
+-------------------------------------------
+==51450== Memcheck, a memory error detector
+==51450== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==51450== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==51450== Command: ./test_trie_hoh_lock
+==51450== Parent PID: 51449
+==51450== 
+==51450== 
+==51450== HEAP SUMMARY:
+==51450==     in use at exit: 0 bytes in 0 blocks
+==51450==   total heap usage: 8,256 allocs, 8,256 frees, 1,989,668 bytes allocated
+==51450== 
+==51450== All heap blocks were freed -- no leaks are possible
+==51450== 
+==51450== For lists of detected and suppressed errors, rerun with: -s
+==51450== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+-------------------------------------------
+Valgrind Helgrind Output(test_trie_hoh_lock):
+-------------------------------------------
+==51484== Helgrind, a thread error detector
+==51484== Copyright (C) 2007-2017, and GNU GPL'd, by OpenWorks LLP et al.
+==51484== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==51484== Command: ./test_trie_hoh_lock
+==51484== Parent PID: 51483
+==51484== 
+==51484== 
+==51484== Use --history-level=approx or =none to gain increased speed, at
+==51484== the cost of reduced accuracy of conflicting-access information
+==51484== For lists of detected and suppressed errors, rerun with: -s
+==51484== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1221 from 129)

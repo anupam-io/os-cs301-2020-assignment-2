@@ -59,6 +59,14 @@ clean:
 
 
 
-# curl https://gist.githubusercontent.com/alphatron1999/5d3e39a3a463d349121978b8e70f8090/raw/fdba018d42132874eef3460b552cfbb62bedf891/Makefile > Makefile
-# curl https://gist.githubusercontent.com/alphatron1999/5d3e39a3a463d349121978b8e70f8090/raw/fdba018d42132874eef3460b552cfbb62bedf891/test_trie_s_lock.c > test_trie_s_lock.c
-# curl https://gist.githubusercontent.com/alphatron1999/5d3e39a3a463d349121978b8e70f8090/raw/fdba018d42132874eef3460b552cfbb62bedf891/test_trie_single_threaded.c > test_trie_single_threaded.c
+
+update:
+	rm -f -r test_trie_s_lock.c
+	rm -f -r test_trie_single_threaded.c
+	curl https://gist.githubusercontent.com/alphatron1999/5d3e39a3a463d349121978b8e70f8090/raw/fdba018d42132874eef3460b552cfbb62bedf891/test_trie_s_lock.c > test_trie_s_lock.c
+	curl https://gist.githubusercontent.com/alphatron1999/5d3e39a3a463d349121978b8e70f8090/raw/fdba018d42132874eef3460b552cfbb62bedf891/test_trie_single_threaded.c > test_trie_single_threaded.c
+
+test_wl:
+	gcc test_wl.c -o test_wl -Wall -Werror -pthread -g 
+	./test_wl
+	rm test_wl
