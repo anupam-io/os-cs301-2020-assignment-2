@@ -62,12 +62,12 @@ trie_node_t new_node(){
 trie_t init_trie(void){
     // printf("init_trie() called.\n");
     #ifndef _NO_HOH_LOCK_TRIE
-        printf("*\n*\n*\n*\n*\nHOH_LOCK_TRIE\n*\n*\n*\n*\n*\n");
+        printf("HOH_LOCK_TRIE\n");
     #else
         #ifdef _S_LOCK_TRIE
-            printf("*\n*\n*\n*\n*\nS_LOCK_TRIE\n*\n*\n*\n*\n*\n");
+            printf("S_LOCK_TRIE\n");
         #else
-            printf("*\n*\n*\n*\n*\nRW_LOCK_TRIE\n*\n*\n*\n*\n*\n");
+            printf("RW_LOCK_TRIE\n");
         #endif
     #endif
 
