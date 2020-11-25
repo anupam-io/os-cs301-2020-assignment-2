@@ -52,7 +52,7 @@ ax[1].set_title('WRITE workload')
 ax[2].set_title('MIXED workload')
 fig.suptitle('Performance of locking techniques on different workloads')
 
-fig.set_size_inches(15, 10)
+fig.set_size_inches(16, 8)
 
 # plt.show()
-plt.savefig('plots/graph.png', dpi=500)
+plt.savefig('plots/graph.png', dpi=300)

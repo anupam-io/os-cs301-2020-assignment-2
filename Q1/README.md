@@ -31,7 +31,3 @@ Present all your plots in the file `plots.md`.
 - **Multi Threaded (Single Locking):** `make s_lock` 
 - **Multi Threaded (R/W Lock):** `make rw_lock`
 - **Multi Threaded (Hand on Hand Lock):** `make hoh_lock`
-
-# Solutions
-## Performance on different workloads
-<img src="plots/graph.png" alt="Performance on differnt workloads">
