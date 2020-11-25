@@ -10,35 +10,28 @@
 #include <time.h>
 #include "workload.c"
 
-int main(){
+int main(int argc, char* argv[]){
+    FILE *fp = fopen("wl/rw_lock.csv", "w");
+
     read_words();
-    clock_t t1, t2;
+    clock_t begin, finish;
+    double dur;
 
     workload* w;
 
-
-
-    w = generate_workload(READ);    
-    t1 = clock();
-    test_workload(w);
-    t2 = clock();
-    // print_workload(w);
-    printf("READ: %f microseconds.\n", 1000*(double)(t2 - t1)/CLOCKS_PER_SEC);
-
-    w = generate_workload(WRITE);    
-    t1 = clock();
-    test_workload(w);
-    t2 = clock();
-    // print_workload(w);
-    printf("WRITE: %f microseconds.\n", 1000*(double)(t2 - t1)/CLOCKS_PER_SEC);
-
-    w = generate_workload(RW);    
-    t1 = clock();
-    test_workload(w);
-    t2 = clock();
-    // print_workload(w);
-    printf("READ-WRITE: %f microseconds.\n", 1000*(double)(t2 - t1)/CLOCKS_PER_SEC);
+    int m_threads = atoi(argv[1]);
+    for(int i = 0; i<3; i++){
+        for(int t = 2; t<=m_threads; t+=2){
+            w = generate_workload(i, t, 1000);  
+            begin = clock();
+            test_workload(w);
+            finish = clock();
+            dur = 1000*(double)(finish - begin)/CLOCKS_PER_SEC;
+            fprintf(fp, "%d, %f\n", t, dur);
+        }
+        fprintf(fp, "\n");
+    }
     
-    
+    fclose(fp);
     return 0;
 }

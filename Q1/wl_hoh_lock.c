@@ -10,7 +10,7 @@
 #include <time.h>
 #include "workload.c"
 
-int main(){
+int main(int argc, char* argv[]){
     FILE *fp = fopen("wl/hoh_lock.csv", "w");
 
     read_words();
@@ -19,10 +19,10 @@ int main(){
 
     workload* w;
 
-
+    int m_threads = atoi(argv[1]);
     for(int i = 0; i<3; i++){
-        for(int t = 2; t<=30; t+=2){
-            w = generate_workload(i, t, 1000);  
+        for(int t = 2; t<=m_threads; t+=2){
+            w = generate_workload(i, t, 1000);
             begin = clock();
             test_workload(w);
             finish = clock();

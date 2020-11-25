@@ -64,11 +64,28 @@ update:
 	curl https://gist.githubusercontent.com/alphatron1999/5d3e39a3a463d349121978b8e70f8090/raw/fdba018d42132874eef3460b552cfbb62bedf891/test_trie_s_lock.c > test_trie_s_lock.c
 	curl https://gist.githubusercontent.com/alphatron1999/5d3e39a3a463d349121978b8e70f8090/raw/fdba018d42132874eef3460b552cfbb62bedf891/test_trie_single_threaded.c > test_trie_single_threaded.c
 
-wl_hoh:
+
+
+wt_targets := test_workload plot
+w_t: ${wt_targets}
+
+m_threads := 40
+test_workload:
 	@mkdir wl -p
-	@gcc wl_hoh_lock.c -o wl_hoh_lock -Wall -Werror -pthread -g -w
-	@./wl_hoh_lock > /dev/null 
-	@rm -f -r wl_hoh_lock
+	gcc wl_s_lock.c -o wl_s_lock -Wall -Werror -pthread -g -w
+	./wl_s_lock ${m_threads}> /dev/null
+	gcc wl_rw_lock.c -o wl_rw_lock -Wall -Werror -pthread -g -w
+	./wl_rw_lock ${m_threads}> /dev/null
+	gcc wl_hoh_lock.c -o wl_hoh_lock -Wall -Werror -pthread -g -w
+	./wl_hoh_lock ${m_threads}> /dev/null
+	 
+plot:
+	@mkdir plots -p
+	@echo "Plotting..."
+	@python3 graph.py & > /dev/null
 
 _clean:
-	@rm -f -r wl
+	rm -f -r wl
+	rm -f wl_hoh_lock
+	rm -f wl_rw_lock
+	rm -f wl_s_lock
