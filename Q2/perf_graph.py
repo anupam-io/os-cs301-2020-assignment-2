@@ -46,5 +46,5 @@ ax[1].set_title('RANDOM workload')
 ax[2].set_title('LOCAL workload')
 fig.suptitle('Cache Page Replacement policies performance')
 
-fig.set_size_inches(8, 6)
-plt.savefig('plots/tm_graph.png', dpi=500)
+fig.set_size_inches(16, 8)
+plt.savefig('plots/tm_graph.png', dpi=300)

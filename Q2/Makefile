@@ -1,3 +1,4 @@
+
 all_targets:= compile run plotting clean show
 
 all: ${all_targets}
@@ -8,7 +9,7 @@ compile:
 
 run:
 	@echo "Running..."
-	@./a.out > outputs.csv
+	@./a.out 20 10000 50 > outputs.csv
 
 plotting:
 	@echo "Plotting..."

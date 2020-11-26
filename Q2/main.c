@@ -16,30 +16,29 @@ You may include a function or 2 to ease the printing of tables.
 #include "workload.c"
 #include "queue.c"
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
-	tp = fopen("timings.csv", "w");
+	int max_thread = atoi(argv[1]);
+	int workload_size = atoi(argv[2]);
+	int workload_pages = atoi(argv[3]);
 
-	workload* w;
-	w = generate_workload(LOOP, 100, 10000);
-	for(int cs = 1; cs<=100; cs++){
-		test_all(w, cs);
-	}
-	printf("\n");
-	fprintf(tp, "\n");
+	time_p = fopen("timings.csv", "w");
+	perf_p = fopen("outputs.csv", "w");
 
-	
-	w = generate_workload(RANDOM, 100, 10000);
-	for(int cs = 1; cs<=100; cs++){
-		test_all(w, cs);
-	}
-	printf("\n");
-	fprintf(tp, "\n");
-	
-	w = generate_workload(LOCAL, 100, 10000);
-	for(int cs = 1; cs<=100; cs++){
-		test_all(w, cs);
+	workload *w;
+
+	for (int i = 0; i < 3; i++)
+	{
+		w = generate_workload(i, workload_pages, workload_size);
+		for (int cs = 1; cs <= max_thread; cs++)
+		{
+			test_all(w, cs);
+		}
+		fprintf(time_p, "\n");
+		fprintf(perf_p, "\n");
 	}
 
+	fclose(time_p);
+	fclose(perf_p);
 	return 0;
 }

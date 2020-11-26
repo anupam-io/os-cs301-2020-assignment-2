@@ -39,7 +39,7 @@
 
 
 # Hit Rate graph
-<img src="plots/hr_graph.png" alt="Hit Rate Graph" width=800/>
+<img src="plots/hr_graph.png" alt="Hit Rate Graph">
 
 # Timing Analysis
-<img src="plots/tm_graph.png" alt="Timing Graph" width=800/>
+<img src="plots/tm_graph.png" alt="Timing Graph">

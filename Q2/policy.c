@@ -10,7 +10,6 @@ Each policy must return the hit rate
 
 float policy_FIFO(workload *w, int cache_size)
 {
-    // the percept of references found in memory
     int hits = 0;
     queue *q = new_queue();
 
@@ -35,7 +34,6 @@ float policy_FIFO(workload *w, int cache_size)
 
 float policy_RANDOM(workload *w, int cache_size)
 {
-    // the percept of references found in memory
     int hits = 0;
     queue *q = new_queue();
 
@@ -60,7 +58,6 @@ float policy_RANDOM(workload *w, int cache_size)
 
 float policy_LRU(workload *w, int cache_size)
 {
-    // the percept of references found in memory
     int hits = 0;
     queue *q = new_queue();
 
@@ -215,11 +212,11 @@ void test_all(workload *w, int cache_size)
     fin = clock();
     t_applru = (double)(fin - st) / CLOCKS_PER_SEC;
 
-    fprintf(tp, "%d, %f, %f, %f, %f\n",
+    fprintf(time_p, "%d, %f, %f, %f, %f\n",
             cache_size,
             t_fifo, t_random, t_lru, t_applru);
 
-    printf("%d, %f, %f, %f, %f\n",
+    fprintf(perf_p, "%d, %f, %f, %f, %f\n",
            cache_size,
            fifo, random, lru, applru);
 }
