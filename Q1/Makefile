@@ -77,7 +77,7 @@ w_t: ${wt_targets}
 m_threads := 40
 null := /dev/null
 RED:= \033[0;31m
-NC:= \033[0m # No Color
+NC:= \033[0m
 
 
 
