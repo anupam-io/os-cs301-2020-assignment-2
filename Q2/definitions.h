@@ -166,4 +166,6 @@ queue *copy_queue(queue *source);
 	printing the queue
 */
 void print_queue(queue *q);
+
+
 #endif /* __DEF_H__ */
