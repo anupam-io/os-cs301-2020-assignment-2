@@ -61,7 +61,6 @@ workload *generate_workload(WorkloadT type, int no_threads, int no_queries)
 void *th_func(void *x)
 {
     // workload* w = (workload*)*((workload **)_w); // in case argument needs to be changed
-    int tno = *((int *)x);
     srand(time(0));
 
 
@@ -79,7 +78,6 @@ void *th_func(void *x)
         // WRITE INTENSIVE WORKLOAD
         for (int i = 0; i < w->no_queries; i++)
         {
-            int *res = malloc(sizeof(int));
             insert(w->trie, words[rand()%TOTAL_WORDS], 1);
         }
     }
@@ -100,6 +98,7 @@ void *th_func(void *x)
             }
         }
     }
+    return NULL;
 }
 
 void test_workload(workload *_w)
@@ -122,6 +121,8 @@ void test_workload(workload *_w)
     {
         pthread_join(w->threads[i], NULL);
     }
+
+    return;
 }
 
 void read_words(){

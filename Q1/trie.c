@@ -346,7 +346,6 @@ char **keys_with_prefix(trie_t trie, char *prefix)
     // printf("returning list from keys_with_prefix(),\ntotal words returning: %d\n", total_words);
     unlock(trie);
     free(_prefix);
-
     return list;
 }
 

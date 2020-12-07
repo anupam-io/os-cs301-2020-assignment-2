@@ -57,6 +57,7 @@ clean:
 
 # Add your rules after this point. Don't edit the things above:
 
+PCC := python3
 
 update:
 	rm -f -r test_trie_s_lock.c
@@ -69,20 +70,37 @@ update:
 wt_targets := test_workload plot
 w_t: ${wt_targets}
 
+
+
+
+
 m_threads := 40
+null := /dev/null
+RED:= \033[0;31m
+NC:= \033[0m # No Color
+
+
+
 test_workload:
 	@mkdir wl -p
-	gcc wl_s_lock.c -o wl_s_lock -Wall -Werror -pthread -g -w
-	./wl_s_lock ${m_threads}> /dev/null
-	gcc wl_rw_lock.c -o wl_rw_lock -Wall -Werror -pthread -g -w
-	./wl_rw_lock ${m_threads}> /dev/null
-	gcc wl_hoh_lock.c -o wl_hoh_lock -Wall -Werror -pthread -g -w
-	./wl_hoh_lock ${m_threads}> /dev/null
+
+	@echo "$(RED)Single lock testing for 2 - ${m_threads}...$(NC)"
+	${CC} wl_s_lock.c -o wl_s_lock ${CCFLAGS} 
+	./wl_s_lock ${m_threads} > ${null}
+	
+	
+	@echo "$(RED)RW Lock testing for 2 - ${m_threads}...$(NC)"
+	${CC} wl_rw_lock.c -o wl_rw_lock ${CCFLAGS}
+	./wl_rw_lock ${m_threads} > ${null}
+
+	@echo "$(RED)HOH Lock testing for 2 - ${m_threads}...$(NC)"
+	${CC} wl_hoh_lock.c -o wl_hoh_lock ${CCFLAGS} 
+	./wl_hoh_lock ${m_threads} > ${null}
 	 
 plot:
 	@mkdir plots -p
-	@echo "Plotting..."
-	@python3 graph.py & > /dev/null
+	@echo "$(RED)Plotting...$(NC)"
+	@$(PCC) graph.py & > /dev/null
 
 _clean:
 	rm -f -r wl

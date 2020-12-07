@@ -121,9 +121,9 @@ int main(int argc, char* argv[]){
         if (key[0]=='-') break;
         list = keys_with_prefix(trie, key);
         int i=0;
-        if (list[i]==NULL){
-            fprintf(pref_test_exp,"\n");
-        }
+        // if (list[i]==NULL){
+        //     fprintf(pref_test_exp,"\n");
+        // }
 
         while(list[i]!=NULL){
             fprintf(pref_test_exp,"%s\n",list[i]);
