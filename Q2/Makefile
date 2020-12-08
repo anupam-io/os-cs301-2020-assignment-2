@@ -25,4 +25,4 @@ clean:
 	@echo "All Cleaned."
 
 show:
-	@google-chrome --new-window --disable-gpu --disable-software-rasterizer -kiosk Solutions.md &
+	#@google-chrome --new-window --disable-gpu --disable-software-rasterizer -kiosk Solutions.md &
