@@ -103,7 +103,4 @@ plot:
 	@$(PCC) graph.py & > /dev/null
 
 _clean:
-	rm -f -r wl
-	rm -f wl_hoh_lock
-	rm -f wl_rw_lock
-	rm -f wl_s_lock
+	rm -rf wl wl_hoh_lock wl_rw_lock wl_s_lock
